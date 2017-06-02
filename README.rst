@@ -12,6 +12,7 @@ Build and test
 ==============
 
 ::
+
     $ make
     $ make test
 
