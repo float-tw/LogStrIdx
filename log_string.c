@@ -13,4 +13,6 @@ int main()
 {
 	Mlog("test");
 	Mlog("test2");
+
+	return 0;
 }
