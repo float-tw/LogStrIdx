@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -16,7 +17,7 @@ int main(int argc, char *argv[])
 	int fd = open (file_name, O_RDONLY);
 	int base = (int)strtol(argv[1], NULL, 16);
 	int offset;
-	char input[16];
+	char input[32];
 
 	/* Get the size of the file. */
 	int status = fstat (fd, &s);
@@ -24,9 +25,13 @@ int main(int argc, char *argv[])
 
 	f = (char *) mmap (0, size, PROT_READ, MAP_PRIVATE, fd, 0);
 
-	while(scanf("%s", input) != EOF) {
-		offset = (int)strtol(input, NULL, 16) - base;
-		printf("%s\n", f + offset);
+	while(fgets(input, sizeof(input), stdin)) {
+		if (strncmp("format: ", input, 8) != 0) {
+			printf("%s", input);
+			continue;
+		}
+		offset = (int)strtol(input + 8, NULL, 16) - base;
+		printf("format: %s\n", f + offset);
 	}
 
 	return 0;
