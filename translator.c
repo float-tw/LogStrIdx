@@ -27,12 +27,16 @@ int main(int argc, char *argv[])
 
 	while(fgets(input, sizeof(input), stdin)) {
 		if (strncmp("format: ", input, 8) != 0) {
-			printf("%s", input);
+			if (strncmp("argc: ", input, 5) != 0) {
+				strtok(input, "\n");
+				printf(", %s", &input[6]);
+			}
 			continue;
 		}
 		offset = (int)strtol(input + 8, NULL, 16) - base;
-		printf("format: %s\n", f + offset);
+		printf("\nprintf \"%s\\n\"", f + offset);
 	}
+	printf("\n");
 
 	return 0;
 }
